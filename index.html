@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <style>
         * {
             margin: 0;
@@ -52,6 +53,10 @@
             text-align: center;
         }
 
+        .second {
+            display: none;
+        }
+
         input {
             outline: none;
             border-radius: 5px;
@@ -67,14 +72,51 @@
             border-color: var(--tg-theme-secondary-bg-color)
         }
     </style>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
     <div class="Main">
-        <h1>Тестовое приложение</h1>
-        <img src="static/bmw.jpg" alt="">
-        <p></p>
-        <button class="btn f-btn">Тест отправки данных</button>
+        <div class="first">
+            <picture>
+                <source srcset="static/nails.webp" type="image/webp">
+            </picture>
+            <h1>Записываемся на ноготочки!</h1>
+            <button class="btn f-btn">Далее</button>
+        </div>
+        <div class="second">
+            <h1>Выберите специалиста</h1>
+            <div class="master-list">
+                <div class="master">
+                    <picture>
+                        <source srcset="static/seal.webp" type="image/webp">
+                    </picture>
+                    <div class="master-info">
+                        <span class="name">Мастер 1</span>
+                        <span class="is-available">Ближайшая запись: послезавтра</span>
+                    </div>
+                </div>
+                <div class="master">
+                    <picture>
+                        <source srcset="static/owl.webp" type="image/webp">
+                    </picture>
+                    <div class="master-info">
+                        <span class="name">Мастер 2</span>
+                        <span class="is-available">Ближайшая запись: 14.10.2024</span>
+                    </div>
+                </div>
+                <div class="master">
+                    <picture>
+                        <source srcset="static/panda.webp" type="image/webp">
+                    </picture>
+                    <div class="master-info">
+                        <span class="name">Мастер 3</span>
+                        <span class="is-available">В отпуске</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <form class="test-form">
         <input type="text" placeholder="Введите заголовок" class="title-inp">
@@ -83,7 +125,6 @@
         <button class="btn s-btn">Отправить</button>
     </form>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <script>
         let tg = window.Telegram.WebApp;
