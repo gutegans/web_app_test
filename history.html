@@ -206,21 +206,11 @@
             let tg = window.Telegram.WebApp;
             tg.expand();
 
-            // Buttons
+            // Button
             const fBtn = document.querySelector(".f-btn");
-            const sBtn = document.querySelector(".s-btn");
-            const tBtn = document.querySelector(".t-btn");
 
             fBtn.addEventListener("click", () => {
-                animateTransition(firstPage, secondPage);
-            });
-
-            sBtn.addEventListener("click", () => {
-                animateTransition(secondPage, thirdPage);
-            });
-
-            tBtn.addEventListener("click", () => {
-                tg.close();
+                window.location.href = "index.html";
             });
         });
     </script>
