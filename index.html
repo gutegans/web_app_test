@@ -97,7 +97,6 @@
         }
 
         .master .emoji {
-            align-self: flex-start;
             width: 80px;
             height: auto;
             margin: 0;
@@ -119,6 +118,7 @@
             row-gap: 12px;
             text-align: left;
             align-content: center;
+            align-items: center;
             width: -webkit-fill-available;
         }
 
@@ -430,21 +430,29 @@
                     </div>
                 </div>
                 <div class="master">
-                    <img class="emoji" src="static/owl.webp">
                     <div class="master-info">
-                        <span class="name">Мастер 2</span>
-                        <span class="functions">креативные дизайны, градиент, стразы, наклейки</span>
-                        <span class="is-available">Ближайшая запись: 14 октября 2024</span>
+                        <div class="row">
+                            <img class="emoji" src="static/owl.webp">
+                            <div class="info-row">
+                                <span class="name">Мастер 2</span>
+                                <span class="functions">креативные дизайны, градиент, стразы, наклейки</span>
+                                <span class="is-available">Ближайшая запись: 14 октября 2024</span>
+                            </div>
+                        </div>
                         <button class="btn s-btn">Выбрать специалиста</button>
                     </div>
                 </div>
                 <div class="master">
-                    <img class="emoji" src="static/panda.webp">
                     <div class="master-info">
-                        <span class="name">Мастер 3</span>
-                        <span class="functions">маникюр "по-сочински"</span>
-                        <span class="is-available">В отпуске</span>
-                        <button class="btn disabled">Запись недоступна</button>
+                        <div class="row">
+                            <img class="emoji" src="static/panda.webp">
+                            <div class="info-row">
+                                <span class="name">Мастер 3</span>
+                                <span class="functions">маникюр "по-сочински"</span>
+                                <span class="is-available">В отпуске</span>
+                            </div>
+                        </div>
+                        <button class="btn s-btn">Запись недоступна</button>
                     </div>
                 </div>
             </div>
