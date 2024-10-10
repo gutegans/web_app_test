@@ -179,23 +179,9 @@
         <div class="first">
             <div class="page-content">
                 <span class="title">Активные записи</span>
-                <div class="master-list">
-                    <div class="master">
-                        <div class="master-info">
-                            <div class="row">
-                                <img class="emoji" src="static/seal.webp">
-                                <div class="info-row">
-                                    <span class="name">Мастер 1</span>
-                                    <span class="is-available">18 октября 2024 в 14:00</span>
-                                    <span class="functions">французский маникюр</span>
-                                </div>
-                            </div>
-                            <button class="btn f-btn">Подробнее</button>
-                        </div>
-                    </div>
-                </div>
+                <span class="description">Нет активных записей</span>
             </div>
-            <button class="btn s-btn fixed-bottom-btn" style="background: #2a9d8f; color: #ffffff;">Новая
+            <button class="btn f-btn fixed-bottom-btn" style="background: #2a9d8f; color: #ffffff;">Новая
                 запись</button>
         </div>
     </div>
@@ -208,11 +194,6 @@
 
             // Button
             const fBtn = document.querySelector(".f-btn");
-            const sBtn = document.querySelector(".s-btn");
-
-            fBtn.addEventListener("click", () => {
-                window.location.href = "https://gutegans.github.io/web_app_test/record.html";
-            });
 
             fBtn.addEventListener("click", () => {
                 window.location.href = "https://gutegans.github.io/web_app_test/";
