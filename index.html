@@ -70,11 +70,6 @@
             background: var(--tg-theme-button-color);
         }
 
-        /* .second,
-        .third {
-            display: none;
-        } */
-
         .master-list {
             display: flex;
             flex-direction: column;
@@ -162,8 +157,6 @@
             color: #c0c0c0;
             background-color: #ffffff;
         }
-
-
 
         .calendar-container {
             display: flex;
@@ -399,7 +392,14 @@
 
 <body>
     <div class="Main">
-        <div class="first page active">
+        <div class="null page active">
+            <div class="page-content">
+                <span class="title">Активные записи</span>
+                <span class="description" style="text-align: center;">Нет активных записей</span>
+            </div>
+            <button class="btn n-btn fixed-bottom-btn" style="background: #2a9d8f; color: #ffffff;">Записаться</button>
+        </div>
+        <div class="first page">
             <div class="page-content">
                 <img class="emoji" src="static/nails.webp">
                 <span class="title">Записываемся на ноготочки!</span>
@@ -518,10 +518,12 @@
             tg.expand();
 
             // Buttons
+            const nBtn = document.querySelector(".n-btn");
             const fBtn = document.querySelector(".f-btn");
             const sBtn = document.querySelector(".s-btn");
             const tBtn = document.querySelector(".t-btn");
 
+            const startPage = document.querySelector(".null");
             const firstPage = document.querySelector(".first");
             const secondPage = document.querySelector(".second");
             const thirdPage = document.querySelector(".third");
@@ -537,6 +539,10 @@
                     fromPage.removeEventListener("transitionend", handler);
                 });
             }
+
+            nBtn.addEventListener("click", () => {
+                animateTransition(startPage, firstPage);
+            });
 
             fBtn.addEventListener("click", () => {
                 animateTransition(firstPage, secondPage);
