@@ -245,6 +245,7 @@
             /* background-color: #f0f0f0; */
             padding: 12px 16px;
             border-radius: 999px;
+            padding-left: 0 !important;
         }
 
         #date-title,
@@ -273,6 +274,7 @@
         .services {
             display: flex;
             flex-direction: column;
+            margin-bottom: 32px;
         }
 
         .services label {
@@ -282,13 +284,42 @@
             align-content: center;
             align-items: center;
             justify-content: flex-start;
-            column-gap: 8px;
+            column-gap: 24px;
         }
 
         .services input {
             width: 16px;
             height: 16px;
             border-radius: 999px;
+        }
+
+        .fixed-bottom-btn {
+            position: sticky;
+            margin-top: auto;
+            bottom: 25px;
+            /* left: 0; */
+            width: 100%;
+            height: 48px;
+            /* Высота кнопки */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+            font-weight: 500;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 16px;
+            z-index: 10;
+        }
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 25px;
+            /* Оставляем место для кнопки */
         }
     </style>
 
@@ -298,13 +329,16 @@
 <body>
     <div class="Main">
         <div class="first">
-            <img class="emoji" src="static/nails.webp">
-            <span class="title">Записываемся на ноготочки!</span>
-            <span class="description">Подарите себе красивый маникюр и безупречный уход за ногтями! Мы предлагаем самые
-                лучшие техники и материалы, чтобы ваши ногти всегда выглядели потрясающе.<br><br>Выберите услугу,
-                удобное
-                время, и наши мастера с радостью воплотят ваши идеи в жизнь.</span>
-            <button class="btn f-btn">Далее</button>
+            <div class="page-content">
+                <img class="emoji" src="static/nails.webp">
+                <span class="title">Записываемся на ноготочки!</span>
+                <span class="description">Подарите себе красивый маникюр и безупречный уход за ногтями! Мы предлагаем
+                    самые
+                    лучшие техники и материалы, чтобы ваши ногти всегда выглядели потрясающе.<br><br>Выберите услугу,
+                    удобное
+                    время, и наши мастера с радостью воплотят ваши идеи в жизнь.</span>
+            </div>
+            <button class="btn f-btn fixed-bottom-btn">Далее</button>
         </div>
         <div class="second">
             <span class="title">Выберите специалиста</span>
@@ -341,49 +375,50 @@
             </div>
         </div>
         <div class="third">
-            <div class="master">
-                <img class="emoji" src="static/seal.webp">
-                <div class="master-info">
-                    <span class="name">Мастер 1</span>
-                    <span class="functions">классический маникюр, французский маникюр</span>
+            <div class="page-content">
+                <div class="master">
+                    <img class="emoji" src="static/seal.webp">
+                    <div class="master-info">
+                        <span class="name">Мастер 1</span>
+                        <span class="functions">классический маникюр, французский маникюр</span>
+                    </div>
+                </div>
+                <span class="title" id="date-title">Выберите подходящую дату и время</span>
+                <div class="calendar-container" id="calendar-container">
+                    <div class="calendar-header">
+                        <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
+                        <span id="calendar-month-year"></span>
+                        <button onclick="changeMonth(1)"><img src="static/arrow_forward.svg"></button>
+                    </div>
+                    <div class="calendar" id="calendar-days"></div>
+                </div>
+                <div class="selected-date-container" id="selected-date-container">
+                    <span class="selected-date" id="selected-date"></span>
+                    <button onclick="showCalendar()">Изменить</button>
+                </div>
+
+                <div class="time-container" id="time-container">
+                    <div class="time-slots" id="time-slots">
+                        <!-- Временные слоты добавляются здесь программно -->
+                    </div>
+                </div>
+
+                <div class="selected-time-container" id="selected-time-container">
+                    <span class="selected-time" id="selected-time"></span>
+                    <button onclick="showTimeSelection()">Изменить</button>
+                </div>
+
+                <span class="title" id="services-title">Услуги</span>
+                <div class="services">
+                    <label>
+                        <input type="checkbox"> Классический маникюр
+                    </label>
+                    <label>
+                        <input type="checkbox"> Французский маникюр
+                    </label>
                 </div>
             </div>
-            <span class="title" id="date-title">Выберите подходящую дату и время</span>
-            <div class="calendar-container" id="calendar-container">
-                <div class="calendar-header">
-                    <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
-                    <span id="calendar-month-year"></span>
-                    <button onclick="changeMonth(1)"><img src="static/arrow_forward.svg"></button>
-                </div>
-                <div class="calendar" id="calendar-days"></div>
-            </div>
-            <div class="selected-date-container" id="selected-date-container">
-                <span class="selected-date" id="selected-date"></span>
-                <button onclick="showCalendar()">Изменить</button>
-            </div>
-
-            <div class="time-container" id="time-container">
-                <div class="time-slots" id="time-slots">
-                    <!-- Временные слоты добавляются здесь программно -->
-                </div>
-            </div>
-
-            <div class="selected-time-container" id="selected-time-container">
-                <span class="selected-time" id="selected-time"></span>
-                <button onclick="showTimeSelection()">Изменить</button>
-            </div>
-
-            <span class="title" id="services-title">Услуги</span>
-            <div class="services">
-                <label>
-                    <input type="checkbox"> Классический маникюр
-                </label>
-                <label>
-                    <input type="checkbox"> Французский маникюр
-                </label>
-            </div>
-
-            <button class="btn t-btn disabled" disabled>Записаться</button>
+            <button class="btn t-btn disabled fixed-bottom-btn" disabled>Записаться</button>
         </div>
     </div>
 
