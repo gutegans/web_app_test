@@ -85,7 +85,7 @@
 
         .master {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-content: center;
             align-items: center;
             column-gap: 32px;
@@ -97,9 +97,11 @@
         }
 
         .master .emoji {
+            align-self: flex-start;
             width: 80px;
             height: auto;
             margin: 0;
+            margin-right: 16px;
         }
 
         .master-info {
@@ -109,6 +111,25 @@
             text-align: left;
             align-content: center;
             width: -webkit-fill-available;
+        }
+
+        .master-info .row {
+            display: flex;
+            flex-direction: row;
+            row-gap: 12px;
+            text-align: left;
+            align-content: center;
+            width: -webkit-fill-available;
+        }
+
+        .master-info .row .info-row {
+            display: flex;
+            flex-direction: column;
+            row-gap: 12px;
+            text-align: left;
+            align-content: center;
+            width: -webkit-fill-available;
+            margin-bottom: 12px;
         }
 
         .master-info .name {
@@ -396,11 +417,15 @@
                 чтобы сделать ваш визит максимально комфортным и результативным.</span>
             <div class="master-list">
                 <div class="master">
-                    <img class="emoji" src="static/seal.webp">
                     <div class="master-info">
-                        <span class="name">Мастер 1</span>
-                        <span class="functions">классический маникюр, французский маникюр</span>
-                        <span class="is-available">Ближайшая запись: послезавтра</span>
+                        <div class="row">
+                            <img class="emoji" src="static/seal.webp">
+                            <div class="info-row">
+                                <span class="name">Мастер 1</span>
+                                <span class="functions">классический маникюр, французский маникюр</span>
+                                <span class="is-available">Ближайшая запись: послезавтра</span>
+                            </div>
+                        </div>
                         <button class="btn s-btn">Выбрать специалиста</button>
                     </div>
                 </div>
