@@ -80,7 +80,7 @@
 
         .master {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-content: center;
             align-items: center;
             column-gap: 32px;
@@ -92,12 +92,32 @@
         }
 
         .master .emoji {
+            align-self: flex-start;
             width: 80px;
             height: auto;
             margin: 0;
+            margin-right: 16px;
         }
 
         .master-info {
+            display: flex;
+            flex-direction: column;
+            row-gap: 12px;
+            text-align: left;
+            align-content: center;
+            width: -webkit-fill-available;
+        }
+
+        .master-info .row {
+            display: flex;
+            flex-direction: row;
+            row-gap: 12px;
+            text-align: left;
+            align-content: center;
+            width: -webkit-fill-available;
+        }
+
+        .master-info .row .info-row {
             display: flex;
             flex-direction: column;
             row-gap: 12px;
@@ -179,24 +199,53 @@
     <div class="Main">
         <div class="first page active"></div>
         <div class="page-content">
-            <img class="emoji" src="static/nails.webp">
             <span class="title">Активные записи</span>
-            <div class="master-list"></div>
-            <div class="master">
-                <img class="emoji" src="static/seal.webp">
-                <div class="master-info">
-                    <span class="name">Мастер 1</span>
-                    <span class="is-available">18 октября 2024 в 14:00</span>
-                    <span class="functions">французский маникюр</span>
-                    <div class="buttons">
-                        <button class="btn s-btn">Перенести запись</button>
-                        <button class="btn s-btn cancel">Отменить запись</button>
+            <div class="master-list">
+                <div class="master">
+                    <div class="master-info">
+                        <div class="row">
+                            <img class="emoji" src="static/seal.webp">
+                            <div class="info-row">
+                                <span class="name">Мастер 1</span>
+                                <span class="is-available">18 октября 2024 в 14:00</span>
+                                <span class="functions">французский маникюр</span>
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <button class="btn s-btn">Перенести запись</button>
+                            <button class="btn s-btn cancel">Отменить запись</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <button class="btn f-btn fixed-bottom-btn" style="background: #57cc99; color: #ffffff;">Новая запись</button>
+    <button class="btn f-btn fixed-bottom-btn" style="background: #2a9d8f; color: #ffffff;">Новая запись</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Telegram Web App initialization
+            let tg = window.Telegram.WebApp;
+            tg.expand();
+
+            // Buttons
+            const fBtn = document.querySelector(".f-btn");
+            const sBtn = document.querySelector(".s-btn");
+            const tBtn = document.querySelector(".t-btn");
+
+            fBtn.addEventListener("click", () => {
+                animateTransition(firstPage, secondPage);
+            });
+
+            sBtn.addEventListener("click", () => {
+                animateTransition(secondPage, thirdPage);
+            });
+
+            tBtn.addEventListener("click", () => {
+                tg.close();
+            });
+        });
+    </script>
 </body>
 
 </html>
