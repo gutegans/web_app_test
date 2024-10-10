@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
         }
 
         body {
@@ -25,51 +28,234 @@
 
         }
 
-        h1 {
-            margin-top: 40px;
-            margin-bottom: 10px;
+        .title {
+            display: block;
+            margin: 16px auto;
+            font-size: 1.3em;
+            font-weight: 700;
         }
 
-        img {
-            width: 100%;
-            margin: 30px auto;
+        .description {
+            display: block;
+            margin: 16px auto;
+            font-size: 1em;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        .emoji {
+            display: block;
+            width: 128px;
+            height: 128px;
+            margin: 16px auto;
         }
 
         .btn {
             border: 0;
-            border-radius: 5px;
-            margin-top: 50px;
-            height: 60px;
-            width: 200px;
-            font-style: 20px;
+            border-radius: 999px;
+            height: 36px;
+            width: 100%;
+            font-size: 0.9em;
             font-weight: 500;
             cursor: pointer;
             color: var(--tg-theme-button-text-color);
             background: var(--tg-theme-button-color);
         }
 
-        form {
+        .second,
+        .third {
             display: none;
+        }
+
+        .master-list {
+            display: flex;
+            flex-direction: column;
+            row-gap: 25px;
+            margin: 25px 0;
+        }
+
+        .master {
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            column-gap: 32px;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+
+        .master .emoji {
+            width: 80px;
+            height: 80px;
+            margin: 0;
+        }
+
+        .master-info {
+            display: flex;
+            flex-direction: column;
+            row-gap: 12px;
+            text-align: left;
+            align-content: center;
+            width: -webkit-fill-available;
+        }
+
+        .master-info .name {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .master-info .functions {
+            font-size: 0.9em;
+            font-weight: 300;
+        }
+
+        .master-info .is-available {
+            font-size: 0.9em;
+            font-weight: 300;
+        }
+
+        .master-info .btn {
+            width: 100%;
+            height: 36px;
+            border-radius: 999px;
+        }
+
+        .master-info .disabled {
+            width: 100%;
+            height: 36px;
+            border-radius: 999px;
+            cursor: not-allowed;
+            pointer-events: none;
+            color: #c0c0c0;
+            background-color: #ffffff;
+        }
+
+
+
+        .calendar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 40px);
+            gap: 8px;
             text-align: center;
         }
 
-        .second {
+        .calendar-header {
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 328px;
+        }
+
+        .time-container,
+        .selected-time-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day,
+        .day-label {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: background-color 0.3s;
+        }
+
+        .day-label {
+            font-weight: bold;
+            cursor: default;
+        }
+
+        .day:hover,
+        .time-slot:hover {
+            background-color: #f0f0f0;
+        }
+
+        .day.selected,
+        .time-slot.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+        .other-month {
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        .calendar-header button {
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-header button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .selected-date-container,
+        .selected-time-container {
             display: none;
+            flex-direction: row;
+            column-gap: 16px;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16px;
         }
 
-        input {
-            outline: none;
-            border-radius: 5px;
-            border: 2px solid #535353;
-            padding: 15px 10px;
-            margin: 10px 0 0;
-            background: var(--tg-theme-section-separator-color);
-            color: var(--tg-theme-text-color);
-            transition: all .2s;
+        .selected-date-container button,
+        .selected-time-container button {
+            width: auto;
+            height: 43px;
+            background-color: white;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
         }
 
-        input:focus {
-            border-color: var(--tg-theme-secondary-bg-color)
+        .selected-date,
+        .selected-time {
+            background-color: #f0f0f0;
+            padding: 12px 16px;
+            border-radius: 999px;
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 0 auto;
+            justify-content: flex-start;
+            margin-top: 16px;
+        }
+
+        .time-slot {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 999px;
         }
     </style>
 
@@ -79,51 +265,259 @@
 <body>
     <div class="Main">
         <div class="first">
-            <picture>
-                <source srcset="static/nails.webp" type="image/webp">
-            </picture>
-            <h1>Записываемся на ноготочки!</h1>
+            <img class="emoji" src="static/nails.webp">
+            <span class="title">Записываемся на ноготочки!</span>
+            <span class="description">Подарите себе красивый маникюр и безупречный уход за ногтями! Мы предлагаем самые
+                лучшие техники и материалы, чтобы ваши ногти всегда выглядели потрясающе.<br><br>Выберите услугу,
+                удобное
+                время, и наши мастера с радостью воплотят ваши идеи в жизнь.</span>
             <button class="btn f-btn">Далее</button>
         </div>
         <div class="second">
-            <h1>Выберите специалиста</h1>
+            <span class="title">Выберите специалиста</span>
+            <span class="description">Каждый из наших мастеров обладает высоким профессионализмом и вниманием к деталям,
+                чтобы сделать ваш визит максимально комфортным и результативным.</span>
             <div class="master-list">
                 <div class="master">
-                    <picture>
-                        <source srcset="static/seal.webp" type="image/webp">
-                    </picture>
+                    <img class="emoji" src="static/seal.webp">
                     <div class="master-info">
                         <span class="name">Мастер 1</span>
+                        <span class="functions">классический маникюр, французский маникюр</span>
                         <span class="is-available">Ближайшая запись: послезавтра</span>
+                        <button class="btn s-btn">Выбрать специалиста</button>
                     </div>
                 </div>
                 <div class="master">
-                    <picture>
-                        <source srcset="static/owl.webp" type="image/webp">
-                    </picture>
+                    <img class="emoji" src="static/owl.webp">
                     <div class="master-info">
                         <span class="name">Мастер 2</span>
+                        <span class="functions">креативные дизайны, градиент, стразы, наклейки</span>
                         <span class="is-available">Ближайшая запись: 14.10.2024</span>
+                        <button class="btn s-btn">Выбрать специалиста</button>
                     </div>
                 </div>
                 <div class="master">
-                    <picture>
-                        <source srcset="static/panda.webp" type="image/webp">
-                    </picture>
+                    <img class="emoji" src="static/panda.webp">
                     <div class="master-info">
                         <span class="name">Мастер 3</span>
+                        <span class="functions">сочинский маникюр</span>
                         <span class="is-available">В отпуске</span>
+                        <button class="btn disabled">Запись недоступна</button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="third">
+            <div class="master">
+                <img class="emoji" src="static/seal.webp">
+                <div class="master-info">
+                    <span class="name">Мастер 1</span>
+                    <span class="functions">классический маникюр, французский маникюр</span>
+                </div>
+            </div>
+            <span class="title" id="date-title">Выберите дату и время</span>
+            <div class="calendar-container" id="calendar-container">
+                <div class="calendar-header">
+                    <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
+                    <span id="calendar-month-year"></span>
+                    <button onclick="changeMonth(1)"><img src="static/arrow_forward.svg"></button>
+                </div>
+                <div class="calendar" id="calendar-days"></div>
+            </div>
+            <div class="selected-date-container" id="selected-date-container">
+                <span class="selected-date" id="selected-date"></span>
+                <button onclick="showCalendar()">Выбрать другую дату</button>
+            </div>
+
+            <div class="time-container" id="time-container">
+                <div class="time-slots" id="time-slots">
+                    <!-- Временные слоты добавляются здесь программно -->
+                </div>
+            </div>
+
+            <div class="selected-time-container" id="selected-time-container">
+                <span class="selected-time" id="selected-time"></span>
+                <button onclick="showTimeSelection()">Выбрать другое время</button>
+            </div>
+
+            <span class="title">Выберите услуги:</span>
+            <label>
+                <input type="checkbox"> Классический маникюр
+            </label>
+            <label>
+                <input type="checkbox"> Французский маникюр
+            </label>
+
+            <button class="btn t-btn">Записаться</button>
+        </div>
     </div>
-    <form class="test-form">
-        <input type="text" placeholder="Введите заголовок" class="title-inp">
-        <input type="text" placeholder="Введите описание" class="desc-inp">
-        <input type="text" placeholder="Введите текст" class="text-inp">
-        <button class="btn s-btn">Отправить</button>
-    </form>
+
+
+    <script>
+        const calendarDays = document.getElementById("calendar-days");
+        const calendarMonthYear = document.getElementById("calendar-month-year");
+        const calendarContainer = document.getElementById("calendar-container");
+        const selectedDateContainer = document.getElementById("selected-date-container");
+        const selectedDateText = document.getElementById("selected-date");
+
+        const timeContainer = document.getElementById("time-container");
+        const selectedTimeContainer = document.getElementById("selected-time-container");
+        const selectedTimeText = document.getElementById("selected-time");
+
+        const dateTitle = document.getElementById("date-title");
+        const timeTitle = document.getElementById("time-title");
+
+        const timeSlotsContainer = document.getElementById("time-slots");
+
+        // Массив доступных для записи дат в формате 'ГГГГ-ММ-ДД'
+        const availableDates = [
+            "2024-10-14", "2024-10-16", "2024-10-18",
+            "2024-10-21", "2024-10-23", "2024-10-25",
+            "2024-10-28", "2024-10-30", "2024-11-01"
+        ];
+
+        // Доступные временные слоты
+        const availableTimes = [
+            "10:00", "12:00", "14:00", "16:00"
+        ];
+
+        let selectedDate = null;
+        let selectedTime = null;
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        const dayLabels = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+
+        function renderCalendar(month, year) {
+            calendarDays.innerHTML = "";
+            calendarMonthYear.textContent = new Date(year, month).toLocaleString('ru', { month: 'long', year: 'numeric' });
+
+            dayLabels.forEach(label => {
+                const dayLabel = document.createElement("div");
+                dayLabel.classList.add("day-label");
+                dayLabel.textContent = label;
+                calendarDays.appendChild(dayLabel);
+            });
+
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const prevDaysInMonth = new Date(year, month, 0).getDate();
+
+            const startDay = (firstDayOfMonth + 6) % 7;
+
+            for (let i = startDay - 1; i >= 0; i--) {
+                const dayCell = document.createElement("div");
+                dayCell.classList.add("day", "other-month");
+                dayCell.textContent = prevDaysInMonth - i;
+                calendarDays.appendChild(dayCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement("div");
+                dayCell.classList.add("day");
+                dayCell.textContent = day;
+
+                // Форматируем дату в 'ГГГГ-ММ-ДД'
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                // Проверяем, доступна ли дата
+                if (availableDates.includes(dateString)) {
+                    dayCell.addEventListener("click", () => selectDate(day, month, year));
+                } else {
+                    dayCell.classList.add("disabled");  // Если дата недоступна, делаем её неактивной
+                }
+
+                calendarDays.appendChild(dayCell);
+
+                if (selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year) {
+                    dayCell.classList.add("selected");
+                }
+            }
+
+            const totalCells = startDay + daysInMonth;
+            const nextMonthDays = 7 - (totalCells % 7);
+            if (nextMonthDays < 7) {
+                for (let i = 1; i <= nextMonthDays; i++) {
+                    const dayCell = document.createElement("div");
+                    dayCell.classList.add("day", "other-month");
+                    dayCell.textContent = i;
+                    calendarDays.appendChild(dayCell);
+                }
+            }
+        }
+
+        function selectDate(day, month, year) {
+            selectedDate = new Date(year, month, day);
+            selectedDateText.textContent = selectedDate.toLocaleDateString('ru', { day: 'numeric', month: 'long', year: 'numeric' });
+            toggleCalendarDisplay(false);
+            // updateDateTitle(true);
+            renderTimeSlots();
+        }
+
+        function toggleCalendarDisplay(showCalendar) {
+            calendarContainer.style.display = showCalendar ? 'flex' : 'none';
+            selectedDateContainer.style.display = showCalendar ? 'none' : 'flex';
+            // if (!showCalendar) updateDateTitle(true); // Update title to "Выбранная дата"
+        }
+
+        // function updateDateTitle(isDateSelected) {
+        //     dateTitle.textContent = isDateSelected ? "Выбранная дата" : "Выберите доступную дату";
+        // }
+
+        // function updateTimeTitle(isTimeSelected) {
+        //     timeTitle.textContent = isTimeSelected ? "Выбранное время" : "Выберите время";
+        // }
+
+        function changeMonth(step) {
+            currentMonth += step;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear += 1;
+            }
+            renderCalendar(currentMonth, currentYear);
+        }
+
+        function showCalendar() {
+            toggleCalendarDisplay(true);
+            timeContainer.style.display = "none";
+            selectedTimeContainer.style.display = "none";
+            // updateDateTitle(false);
+        }
+
+        function renderTimeSlots() {
+            timeSlotsContainer.innerHTML = '';
+            availableTimes.forEach(time => {
+                const timeSlot = document.createElement("div");
+                timeSlot.classList.add("time-slot");
+                timeSlot.textContent = time;
+                timeSlot.addEventListener("click", () => selectTime(time));
+                timeSlotsContainer.appendChild(timeSlot);
+            });
+            timeContainer.style.display = "flex";
+            // updateTimeTitle(false);
+        }
+
+        function selectTime(time) {
+            selectedTime = time;
+            selectedTimeText.textContent = time;
+            toggleTimeDisplay(false);
+            // updateTimeTitle(true);
+        }
+
+        function toggleTimeDisplay(showTimeSelection) {
+            timeContainer.style.display = showTimeSelection ? "flex" : "none";
+            selectedTimeContainer.style.display = showTimeSelection ? "none" : "flex";
+        }
+
+        function showTimeSelection() {
+            toggleTimeDisplay(true);
+            // updateTimeTitle(false);
+        }
+
+        renderCalendar(currentMonth, currentYear);
+    </script>
 
 
     <script>
@@ -134,14 +528,20 @@
         let sBtn = document.getElementsByClassName("s-btn")[0]
 
         fBtn.addEventListener("click", () => {
-            document.getElementsByClassName("Main")[0].style.display = "none";
-            document.getElementsByClassName("test-form")[0].style.display = "block";
+            document.getElementsByClassName("first")[0].style.display = "none";
+            document.getElementsByClassName("second")[0].style.display = "block";
         });
 
         sBtn.addEventListener("click", () => {
+            document.getElementsByClassName("second")[0].style.display = "none";
+            document.getElementsByClassName("third")[0].style.display = "block";
+        });
+
+        tBtn.addEventListener("click", () => {
             tg.close();
         });
     </script>
+
 </body>
 
 </html>
