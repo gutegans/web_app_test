@@ -20,6 +20,8 @@
         html,
         body {
             overflow-x: hidden;
+            width: 100vw;
+            height: 100vh;
         }
 
         body {
@@ -331,21 +333,21 @@
         }
 
         .page {
+            display: none;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             opacity: 0;
-            visibility: hidden;
             transform: translateX(100%);
             transition: opacity 0.5s ease, transform 0.5s ease;
             padding: 25px;
         }
 
         .page.active {
+            display: block;
             opacity: 1;
-            visibility: visible;
             transform: translateX(0);
         }
 
@@ -484,27 +486,28 @@
             const secondPage = document.querySelector(".second");
             const thirdPage = document.querySelector(".third");
 
-            function animateTransition(fromPage, toPage, enterClass, exitClass) {
-                fromPage.classList.add(exitClass);
-                toPage.classList.add(enterClass, "active");
+            function animateTransition(fromPage, toPage) {
+                fromPage.classList.add("slide-out-to-left");
+                toPage.classList.add("slide-in-from-right", "active");
 
+                // Убираем анимационные классы после окончания анимации
                 fromPage.addEventListener("transitionend", function handler() {
-                    fromPage.classList.remove("active", exitClass);
-                    toPage.classList.remove(enterClass);
+                    fromPage.classList.remove("active", "slide-out-to-left");
+                    toPage.classList.remove("slide-in-from-right");
                     fromPage.removeEventListener("transitionend", handler);
                 });
             }
 
             fBtn.addEventListener("click", () => {
-                animateTransition(firstPage, secondPage, "slide-in-from-right", "slide-out-to-left");
+                animateTransition(firstPage, secondPage);
             });
 
             sBtn.addEventListener("click", () => {
-                animateTransition(secondPage, thirdPage, "slide-in-from-right", "slide-out-to-left");
+                animateTransition(secondPage, thirdPage);
             });
 
             tBtn.addEventListener("click", () => {
-                window.Telegram.WebApp.close();
+                tg.close();
             });
 
             // Calendar and time selection elements
