@@ -486,28 +486,28 @@
             const secondPage = document.querySelector(".second");
             const thirdPage = document.querySelector(".third");
 
-            function animateTransition(fromPage, toPage, enterClass, exitClass) {
-                fromPage.classList.add(exitClass);
-                toPage.classList.add(enterClass, "active");
-                fromPage.classList.remove("active");
+            function animateTransition(fromPage, toPage) {
+                fromPage.classList.add("slide-out-to-left");
+                toPage.classList.add("slide-in-from-right", "active");
 
+                // Убираем анимационные классы после окончания анимации
                 fromPage.addEventListener("transitionend", function handler() {
-                    fromPage.classList.remove(exitClass);
-                    toPage.classList.remove(enterClass);
+                    fromPage.classList.remove("active", "slide-out-to-left");
+                    toPage.classList.remove("slide-in-from-right");
                     fromPage.removeEventListener("transitionend", handler);
                 });
             }
 
             fBtn.addEventListener("click", () => {
-                animateTransition(firstPage, secondPage, "slide-in-from-right", "slide-out-to-left");
+                animateTransition(firstPage, secondPage);
             });
 
             sBtn.addEventListener("click", () => {
-                animateTransition(secondPage, thirdPage, "slide-in-from-right", "slide-out-to-left");
+                animateTransition(secondPage, thirdPage);
             });
 
             tBtn.addEventListener("click", () => {
-                window.Telegram.WebApp.close();
+                tg.close();
             });
 
             // Calendar and time selection elements
