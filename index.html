@@ -219,9 +219,14 @@
             flex-direction: row;
             column-gap: 16px;
             align-content: center;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             margin-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .selected-date-container {
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .selected-date-container button,
@@ -237,9 +242,16 @@
 
         .selected-date,
         .selected-time {
-            background-color: #f0f0f0;
+            /* background-color: #f0f0f0; */
             padding: 12px 16px;
             border-radius: 999px;
+        }
+
+        #date-title,
+        #time-title,
+        #services-title {
+            text-align: left;
+            margin-top: 32px;
         }
 
         .time-slots {
@@ -249,12 +261,33 @@
             gap: 16px;
             margin: 0 auto;
             justify-content: flex-start;
-            margin-top: 16px;
+            margin-top: 32px;
         }
 
         .time-slot {
             padding: 12px 16px;
             cursor: pointer;
+            border-radius: 999px;
+        }
+
+        .services {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .services label {
+            display: flex;
+            flex-direction: row;
+            height: 32px;
+            align-content: center;
+            align-items: center;
+            justify-content: flex-start;
+            column-gap: 8px;
+        }
+
+        .services input {
+            width: 16px;
+            height: 16px;
             border-radius: 999px;
         }
     </style>
@@ -292,7 +325,7 @@
                     <div class="master-info">
                         <span class="name">Мастер 2</span>
                         <span class="functions">креативные дизайны, градиент, стразы, наклейки</span>
-                        <span class="is-available">Ближайшая запись: 14.10.2024</span>
+                        <span class="is-available">Ближайшая запись: 14 октября 2024</span>
                         <button class="btn s-btn">Выбрать специалиста</button>
                     </div>
                 </div>
@@ -315,7 +348,7 @@
                     <span class="functions">классический маникюр, французский маникюр</span>
                 </div>
             </div>
-            <span class="title" id="date-title">Выберите дату и время</span>
+            <span class="title" id="date-title">Выберите подходящую дату и время</span>
             <div class="calendar-container" id="calendar-container">
                 <div class="calendar-header">
                     <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
@@ -326,7 +359,7 @@
             </div>
             <div class="selected-date-container" id="selected-date-container">
                 <span class="selected-date" id="selected-date"></span>
-                <button onclick="showCalendar()">Выбрать другую дату</button>
+                <button onclick="showCalendar()">Изменить</button>
             </div>
 
             <div class="time-container" id="time-container">
@@ -337,208 +370,220 @@
 
             <div class="selected-time-container" id="selected-time-container">
                 <span class="selected-time" id="selected-time"></span>
-                <button onclick="showTimeSelection()">Выбрать другое время</button>
+                <button onclick="showTimeSelection()">Изменить</button>
             </div>
 
-            <span class="title">Выберите услуги:</span>
-            <label>
-                <input type="checkbox"> Классический маникюр
-            </label>
-            <label>
-                <input type="checkbox"> Французский маникюр
-            </label>
+            <span class="title" id="services-title">Услуги</span>
+            <div class="services">
+                <label>
+                    <input type="checkbox"> Классический маникюр
+                </label>
+                <label>
+                    <input type="checkbox"> Французский маникюр
+                </label>
+            </div>
 
-            <button class="btn t-btn">Записаться</button>
+            <button class="btn t-btn disabled" disabled>Записаться</button>
         </div>
     </div>
 
 
     <script>
-        const calendarDays = document.getElementById("calendar-days");
-        const calendarMonthYear = document.getElementById("calendar-month-year");
-        const calendarContainer = document.getElementById("calendar-container");
-        const selectedDateContainer = document.getElementById("selected-date-container");
-        const selectedDateText = document.getElementById("selected-date");
+        document.addEventListener("DOMContentLoaded", function () {
+            // Telegram Web App initialization
+            let tg = window.Telegram.WebApp;
+            tg.expand();
 
-        const timeContainer = document.getElementById("time-container");
-        const selectedTimeContainer = document.getElementById("selected-time-container");
-        const selectedTimeText = document.getElementById("selected-time");
+            // Buttons
+            const fBtn = document.querySelector(".f-btn");
+            const sBtn = document.querySelector(".s-btn");
+            const tBtn = document.querySelector(".t-btn");
 
-        const dateTitle = document.getElementById("date-title");
-        const timeTitle = document.getElementById("time-title");
+            // Sections
+            const firstSection = document.querySelector(".first");
+            const secondSection = document.querySelector(".second");
+            const thirdSection = document.querySelector(".third");
 
-        const timeSlotsContainer = document.getElementById("time-slots");
-
-        // Массив доступных для записи дат в формате 'ГГГГ-ММ-ДД'
-        const availableDates = [
-            "2024-10-14", "2024-10-16", "2024-10-18",
-            "2024-10-21", "2024-10-23", "2024-10-25",
-            "2024-10-28", "2024-10-30", "2024-11-01"
-        ];
-
-        // Доступные временные слоты
-        const availableTimes = [
-            "10:00", "12:00", "14:00", "16:00"
-        ];
-
-        let selectedDate = null;
-        let selectedTime = null;
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-        const dayLabels = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-
-        function renderCalendar(month, year) {
-            calendarDays.innerHTML = "";
-            calendarMonthYear.textContent = new Date(year, month).toLocaleString('ru', { month: 'long', year: 'numeric' });
-
-            dayLabels.forEach(label => {
-                const dayLabel = document.createElement("div");
-                dayLabel.classList.add("day-label");
-                dayLabel.textContent = label;
-                calendarDays.appendChild(dayLabel);
+            // Event listeners for navigation
+            fBtn.addEventListener("click", () => {
+                firstSection.style.display = "none";
+                secondSection.style.display = "block";
             });
 
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const prevDaysInMonth = new Date(year, month, 0).getDate();
+            sBtn.addEventListener("click", () => {
+                secondSection.style.display = "none";
+                thirdSection.style.display = "block";
+            });
 
-            const startDay = (firstDayOfMonth + 6) % 7;
+            tBtn.addEventListener("click", () => {
+                tg.close();
+            });
 
-            for (let i = startDay - 1; i >= 0; i--) {
-                const dayCell = document.createElement("div");
-                dayCell.classList.add("day", "other-month");
-                dayCell.textContent = prevDaysInMonth - i;
-                calendarDays.appendChild(dayCell);
-            }
+            // Calendar and time selection elements
+            const calendarDays = document.getElementById("calendar-days");
+            const calendarMonthYear = document.getElementById("calendar-month-year");
+            const calendarContainer = document.getElementById("calendar-container");
+            const selectedDateContainer = document.getElementById("selected-date-container");
+            const selectedDateText = document.getElementById("selected-date");
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayCell = document.createElement("div");
-                dayCell.classList.add("day");
-                dayCell.textContent = day;
+            const timeContainer = document.getElementById("time-container");
+            const selectedTimeContainer = document.getElementById("selected-time-container");
+            const selectedTimeText = document.getElementById("selected-time");
 
-                // Форматируем дату в 'ГГГГ-ММ-ДД'
-                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const timeSlotsContainer = document.getElementById("time-slots");
+            const serviceCheckboxes = document.querySelectorAll(".services input[type='checkbox']");
 
-                // Проверяем, доступна ли дата
-                if (availableDates.includes(dateString)) {
-                    dayCell.addEventListener("click", () => selectDate(day, month, year));
-                } else {
-                    dayCell.classList.add("disabled");  // Если дата недоступна, делаем её неактивной
-                }
+            // Available dates and times
+            const availableDates = [
+                "2024-10-14", "2024-10-16", "2024-10-18",
+                "2024-10-21", "2024-10-23", "2024-10-25",
+                "2024-10-28", "2024-10-30", "2024-11-01"
+            ];
+            const availableTimes = ["10:00", "12:00", "14:00", "16:00"];
 
-                calendarDays.appendChild(dayCell);
+            let selectedDate = null;
+            let selectedTime = null;
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+            const dayLabels = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
-                if (selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year) {
-                    dayCell.classList.add("selected");
-                }
-            }
+            // Render calendar function
+            function renderCalendar(month, year) {
+                calendarDays.innerHTML = "";
+                calendarMonthYear.textContent = new Date(year, month).toLocaleString('ru', { month: 'long', year: 'numeric' }).replace(' г.', '');
 
-            const totalCells = startDay + daysInMonth;
-            const nextMonthDays = 7 - (totalCells % 7);
-            if (nextMonthDays < 7) {
-                for (let i = 1; i <= nextMonthDays; i++) {
+                dayLabels.forEach(label => {
+                    const dayLabel = document.createElement("div");
+                    dayLabel.classList.add("day-label");
+                    dayLabel.textContent = label;
+                    calendarDays.appendChild(dayLabel);
+                });
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const prevDaysInMonth = new Date(year, month, 0).getDate();
+                const startDay = (firstDayOfMonth + 6) % 7;
+
+                for (let i = startDay - 1; i >= 0; i--) {
                     const dayCell = document.createElement("div");
                     dayCell.classList.add("day", "other-month");
-                    dayCell.textContent = i;
+                    dayCell.textContent = prevDaysInMonth - i;
                     calendarDays.appendChild(dayCell);
                 }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement("div");
+                    dayCell.classList.add("day");
+                    dayCell.textContent = day;
+
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    if (availableDates.includes(dateString)) {
+                        dayCell.addEventListener("click", () => selectDate(day, month, year));
+                    } else {
+                        dayCell.classList.add("disabled");
+                    }
+                    calendarDays.appendChild(dayCell);
+
+                    if (selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year) {
+                        dayCell.classList.add("selected");
+                    }
+                }
+
+                const totalCells = startDay + daysInMonth;
+                const nextMonthDays = 7 - (totalCells % 7);
+                if (nextMonthDays < 7) {
+                    for (let i = 1; i <= nextMonthDays; i++) {
+                        const dayCell = document.createElement("div");
+                        dayCell.classList.add("day", "other-month");
+                        dayCell.textContent = i;
+                        calendarDays.appendChild(dayCell);
+                    }
+                }
             }
-        }
 
-        function selectDate(day, month, year) {
-            selectedDate = new Date(year, month, day);
-            selectedDateText.textContent = selectedDate.toLocaleDateString('ru', { day: 'numeric', month: 'long', year: 'numeric' });
-            toggleCalendarDisplay(false);
-            // updateDateTitle(true);
-            renderTimeSlots();
-        }
-
-        function toggleCalendarDisplay(showCalendar) {
-            calendarContainer.style.display = showCalendar ? 'flex' : 'none';
-            selectedDateContainer.style.display = showCalendar ? 'none' : 'flex';
-            // if (!showCalendar) updateDateTitle(true); // Update title to "Выбранная дата"
-        }
-
-        // function updateDateTitle(isDateSelected) {
-        //     dateTitle.textContent = isDateSelected ? "Выбранная дата" : "Выберите доступную дату";
-        // }
-
-        // function updateTimeTitle(isTimeSelected) {
-        //     timeTitle.textContent = isTimeSelected ? "Выбранное время" : "Выберите время";
-        // }
-
-        function changeMonth(step) {
-            currentMonth += step;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear -= 1;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear += 1;
+            // Date selection
+            function selectDate(day, month, year) {
+                selectedDate = new Date(year, month, day);
+                selectedDateText.textContent = selectedDate.toLocaleDateString('ru', { day: 'numeric', month: 'long', year: 'numeric' }).replace(' г.', '');
+                toggleCalendarDisplay(false);
+                renderTimeSlots();
+                updateSubmitButtonState();
             }
-            renderCalendar(currentMonth, currentYear);
-        }
 
-        function showCalendar() {
-            toggleCalendarDisplay(true);
-            timeContainer.style.display = "none";
-            selectedTimeContainer.style.display = "none";
-            // updateDateTitle(false);
-        }
+            function toggleCalendarDisplay(showCalendar) {
+                calendarContainer.style.display = showCalendar ? 'flex' : 'none';
+                selectedDateContainer.style.display = showCalendar ? 'none' : 'flex';
+            }
 
-        function renderTimeSlots() {
-            timeSlotsContainer.innerHTML = '';
-            availableTimes.forEach(time => {
-                const timeSlot = document.createElement("div");
-                timeSlot.classList.add("time-slot");
-                timeSlot.textContent = time;
-                timeSlot.addEventListener("click", () => selectTime(time));
-                timeSlotsContainer.appendChild(timeSlot);
+            function changeMonth(step) {
+                currentMonth += step;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear -= 1;
+                } else if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear += 1;
+                }
+                renderCalendar(currentMonth, currentYear);
+            }
+
+            function showCalendar() {
+                toggleCalendarDisplay(true);
+                timeContainer.style.display = "none";
+                selectedTimeContainer.style.display = "none";
+            }
+
+            // Render time slots
+            function renderTimeSlots() {
+                timeSlotsContainer.innerHTML = '';
+                availableTimes.forEach(time => {
+                    const timeSlot = document.createElement("div");
+                    timeSlot.classList.add("time-slot");
+                    timeSlot.textContent = time;
+                    timeSlot.addEventListener("click", () => selectTime(time));
+                    timeSlotsContainer.appendChild(timeSlot);
+                });
+                timeContainer.style.display = "flex";
+            }
+
+            // Time selection
+            function selectTime(time) {
+                selectedTime = time;
+                selectedTimeText.textContent = time;
+                toggleTimeDisplay(false);
+                updateSubmitButtonState();
+            }
+
+            function toggleTimeDisplay(showTimeSelection) {
+                timeContainer.style.display = showTimeSelection ? "flex" : "none";
+                selectedTimeContainer.style.display = showTimeSelection ? "none" : "flex";
+            }
+
+            function showTimeSelection() {
+                toggleTimeDisplay(true);
+            }
+
+            function updateSubmitButtonState() {
+                const isServiceSelected = Array.from(serviceCheckboxes).some(checkbox => checkbox.checked);
+                if (selectedDate && selectedTime && isServiceSelected) {
+                    tBtn.classList.remove("disabled");
+                    tBtn.disabled = false;
+                    tBtn.style.cursor = "pointer";
+                    tBtn.style.opacity = "1";
+                } else {
+                    tBtn.classList.add("disabled");
+                    tBtn.disabled = true;
+                    tBtn.style.cursor = "not-allowed";
+                    tBtn.style.opacity = "0.6";
+                }
+            }
+
+            serviceCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateSubmitButtonState);
             });
-            timeContainer.style.display = "flex";
-            // updateTimeTitle(false);
-        }
 
-        function selectTime(time) {
-            selectedTime = time;
-            selectedTimeText.textContent = time;
-            toggleTimeDisplay(false);
-            // updateTimeTitle(true);
-        }
-
-        function toggleTimeDisplay(showTimeSelection) {
-            timeContainer.style.display = showTimeSelection ? "flex" : "none";
-            selectedTimeContainer.style.display = showTimeSelection ? "none" : "flex";
-        }
-
-        function showTimeSelection() {
-            toggleTimeDisplay(true);
-            // updateTimeTitle(false);
-        }
-
-        renderCalendar(currentMonth, currentYear);
-    </script>
-
-
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let fBtn = document.getElementsByClassName("f-btn")[0]
-        let sBtn = document.getElementsByClassName("s-btn")[0]
-
-        fBtn.addEventListener("click", () => {
-            document.getElementsByClassName("first")[0].style.display = "none";
-            document.getElementsByClassName("second")[0].style.display = "block";
-        });
-
-        sBtn.addEventListener("click", () => {
-            document.getElementsByClassName("second")[0].style.display = "none";
-            document.getElementsByClassName("third")[0].style.display = "block";
-        });
-
-        tBtn.addEventListener("click", () => {
-            tg.close();
+            renderCalendar(currentMonth, currentYear);
+            updateSubmitButtonState();
         });
     </script>
 
