@@ -377,46 +377,48 @@
             </div>
         </div>
         <div class="third">
-            <div class="master">
-                <img class="emoji" src="static/seal.gif">
-                <div class="master-info">
-                    <span class="name">Мастер 1</span>
-                    <span class="functions">классический маникюр, французский маникюр</span>
+            <div class="page-content">
+                <div class="master">
+                    <img class="emoji" src="static/seal.gif">
+                    <div class="master-info">
+                        <span class="name">Мастер 1</span>
+                        <span class="functions">классический маникюр, французский маникюр</span>
+                    </div>
                 </div>
-            </div>
-            <span class="title" id="date-title">Выберите подходящую дату и время</span>
-            <div class="calendar-container" id="calendar-container">
-                <div class="calendar-header">
-                    <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
-                    <span id="calendar-month-year"></span>
-                    <button onclick="changeMonth(1)"><img src="static/arrow_forward.svg"></button>
+                <span class="title" id="date-title">Выберите подходящую дату и время</span>
+                <div class="calendar-container" id="calendar-container">
+                    <div class="calendar-header">
+                        <button onclick="changeMonth(-1)"><img src="static/arrow_back.svg"></button>
+                        <span id="calendar-month-year"></span>
+                        <button onclick="changeMonth(1)"><img src="static/arrow_forward.svg"></button>
+                    </div>
+                    <div class="calendar" id="calendar-days"></div>
                 </div>
-                <div class="calendar" id="calendar-days"></div>
-            </div>
-            <div class="selected-date-container" id="selected-date-container">
-                <span class="selected-date" id="selected-date"></span>
-                <button id="showCalendarButton">Изменить</button>
-            </div>
-
-            <div class="time-container" id="time-container">
-                <div class="time-slots" id="time-slots">
-                    <!-- Временные слоты добавляются здесь программно -->
+                <div class="selected-date-container" id="selected-date-container">
+                    <span class="selected-date" id="selected-date"></span>
+                    <button id="showCalendarButton">Изменить</button>
                 </div>
-            </div>
 
-            <div class="selected-time-container" id="selected-time-container">
-                <span class="selected-time" id="selected-time"></span>
-                <button id="showTimeSelectionButton">Изменить</button>
-            </div>
+                <div class="time-container" id="time-container">
+                    <div class="time-slots" id="time-slots">
+                        <!-- Временные слоты добавляются здесь программно -->
+                    </div>
+                </div>
 
-            <span class="title" id="services-title">Услуги</span>
-            <div class="services">
-                <label>
-                    <input type="checkbox"> Классический маникюр
-                </label>
-                <label>
-                    <input type="checkbox"> Французский маникюр
-                </label>
+                <div class="selected-time-container" id="selected-time-container">
+                    <span class="selected-time" id="selected-time"></span>
+                    <button id="showTimeSelectionButton">Изменить</button>
+                </div>
+
+                <span class="title" id="services-title">Услуги</span>
+                <div class="services">
+                    <label>
+                        <input type="checkbox"> Классический маникюр
+                    </label>
+                    <label>
+                        <input type="checkbox"> Французский маникюр
+                    </label>
+                </div>
             </div>
             <button class="btn t-btn disabled fixed-bottom-btn" disabled>Записаться</button>
         </div>
