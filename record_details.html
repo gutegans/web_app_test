@@ -204,7 +204,8 @@
             <div class="page-content">
                 <div class="first-row">
                     <button class="bb"><img src="static/arrow_back_black.svg"></button>
-                    <span class="title">Вы записаны</span>
+                    <span class="title" style="margin: 0 auto !important;">Вы записаны</span>
+                    <div style="display: block; width: 32px; height: 32px;"></div>
                 </div>
                 <div class="master-list">
                     <div class="master">
@@ -222,7 +223,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn fixed-bottom-btn" style="bottom: 98px;">Перенести запись</button>
+            <button class="btn fixed-bottom-btn" style="bottom: 88px;">Перенести запись</button>
             <button class="btn f-btn fixed-bottom-btn" style="background: #EF233C; color: #FFFFFF;">Отменить
                 запись</button>
         </div>
@@ -245,21 +246,19 @@
             fBtn.addEventListener("click", () => {
                 tg.showPopup({
                     title: "Подтвердите действие",
-                    message: "Вы хотите продолжить?",
+                    message: "Отменить запись?",
                     buttons: [
-                        { id: "confirm", type: "ok", text: "Ок" },
-                        { id: "cancel", type: "close", text: "Отмена" }
+                        { id: "confirm", type: "ok", text: "Да" },
+                        { id: "destructive", type: "cancel", text: "Нет" }
                     ]
                 });
             });
 
             tg.onEvent("popupClosed", (data) => {
                 if (data.button_id === "confirm") {
-                    console.log("Пользователь нажал 'Ок'");
-                    // Выполните нужное действие
+                    tg.close();
                 } else {
-                    console.log("Пользователь нажал 'Отмена'");
-                    // Обработайте отмену
+                    console.log("Пользователь нажал 'Нет'");
                 }
             });
         });
