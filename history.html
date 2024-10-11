@@ -214,6 +214,46 @@
         .page.slide-out-to-right {
             transform: translateX(100%);
         }
+
+        .first-row {
+            display: inline-flex;
+            width: 100%;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .first-row button {
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .first-row button img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .master-h {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            align-items: center;
+            column-gap: 32px;
+            border-radius: 16px;
+        }
+
+        .master-h .emoji {
+            align-self: center;
+            width: 128px;
+            height: auto;
+            margin: 0;
+        }
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -251,7 +291,7 @@
                     <div style="display: block; width: 32px; height: 32px;"></div>
                 </div>
                 <div class="master-list">
-                    <div class="master">
+                    <div class="master-h">
                         <div class="master-info">
                             <img class="emoji" src="static/seal.webp">
                             <div class="row">
