@@ -352,14 +352,14 @@
                     title: "Подтвердите действие",
                     message: "Отменить запись?",
                     buttons: [
-                        { id: "confirm", type: "default", text: "Да" },
-                        { id: "destructive", type: "destructive", text: "Нет" }
+                        { id: "destructive", type: "destructive", text: "Да" },
+                        { id: "confirm", type: "default", text: "Нет" }
                     ]
                 });
             });
 
             tg.onEvent("popupClosed", (data) => {
-                if (data.button_id === "confirm") {
+                if (data.button_id === "destructive") {
                     tg.close();
                 } else {
                     console.log("Пользователь нажал 'Нет'");
