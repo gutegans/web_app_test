@@ -169,6 +169,51 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 25px;
+            /* Оставляем место для кнопки */
+        }
+
+        .page {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            padding: 25px;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Анимация перехода справа налево */
+        .page.slide-in-from-right {
+            transform: translateX(100%);
+        }
+
+        .page.slide-out-to-left {
+            transform: translateX(-100%);
+        }
+
+        /* Анимация перехода слева направо */
+        .page.slide-in-from-left {
+            transform: translateX(-100%);
+        }
+
+        .page.slide-out-to-right {
+            transform: translateX(100%);
+        }
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -176,7 +221,7 @@
 
 <body>
     <div class="Main">
-        <div class="first">
+        <div class="first page active">
             <div class="page-content">
                 <span class="title">Активные записи</span>
                 <div class="master-list">
@@ -198,6 +243,33 @@
             <button class="btn s-btn fixed-bottom-btn" style="background: #2a9d8f; color: #ffffff;">Новая
                 запись</button>
         </div>
+        <div class="second page">
+            <div class="page-content">
+                <div class="first-row">
+                    <button class="bb"><img src="static/arrow_back_black.svg"></button>
+                    <span class="title" style="margin: 0 auto !important;">Вы записаны</span>
+                    <div style="display: block; width: 32px; height: 32px;"></div>
+                </div>
+                <div class="master-list">
+                    <div class="master">
+                        <div class="master-info">
+                            <img class="emoji" src="static/seal.webp">
+                            <div class="row">
+                                <div class="info-row">
+                                    <span class="title">Мастер 1</span>
+                                    <span class="description" style="margin: 0;">18 октября 2024 в 14:00</span>
+                                    <span class="title">Услуги</span>
+                                    <span class="description" style="margin: 0;">французский маникюр</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn fixed-bottom-btn" style="bottom: 88px;">Перенести запись</button>
+            <button class="btn c-btn fixed-bottom-btn" style="background: #EF233C; color: #FFFFFF;">Отменить
+                запись</button>
+        </div>
     </div>
 
     <script>
@@ -207,14 +279,54 @@
             tg.expand();
 
             // Button
+            const backBtn = document.querySelector(".bb");
             const fBtn = document.querySelector(".f-btn");
             const sBtn = document.querySelector(".s-btn");
+            const cBtn = document.querySelector(".c-btn");
+
+            const firstPage = document.querySelector(".first");
+            const secondPage = document.querySelector(".second");
+
+            function animateTransition(fromPage, toPage) {
+                fromPage.classList.add("slide-out-to-left");
+                toPage.classList.add("slide-in-from-right", "active");
+
+                // Убираем анимационные классы после окончания анимации
+                fromPage.addEventListener("transitionend", function handler() {
+                    fromPage.classList.remove("active", "slide-out-to-left");
+                    toPage.classList.remove("slide-in-from-right");
+                    fromPage.removeEventListener("transitionend", handler);
+                });
+            }
 
             fBtn.addEventListener("click", () => {
-                window.location.href = "https://gutegans.github.io/web_app_test/record.html";
+                animateTransition(firstPage, secondPage);
             });
 
-            fBtn.addEventListener("click", () => {
+            backBtn.addEventListener("click", () => {
+                window.location.href = "https://gutegans.github.io/web_app_test/";
+            });
+
+            cBtn.addEventListener("click", () => {
+                tg.showPopup({
+                    title: "Подтвердите действие",
+                    message: "Отменить запись?",
+                    buttons: [
+                        { id: "confirm", type: "default", text: "Да" },
+                        { id: "destructive", type: "destructive", text: "Нет" }
+                    ]
+                });
+            });
+
+            tg.onEvent("popupClosed", (data) => {
+                if (data.button_id === "confirm") {
+                    tg.close();
+                } else {
+                    console.log("Пользователь нажал 'Нет'");
+                }
+            });
+
+            sBtn.addEventListener("click", () => {
                 window.location.href = "https://gutegans.github.io/web_app_test/";
             });
         });
